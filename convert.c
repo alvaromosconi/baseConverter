@@ -2,30 +2,32 @@
 #include <stdlib.h>
 #include "convert.h"
 
-//char base_digits[16] = {'0', '1', '2', '3', '4', '5', '6', '7','8', '9', 'A', 'B', 'C', 'D', 'E', 'F'};
+void getFractionalSide(char *number, char *destination);
 
 int main(int argc, char * argv[]) {
 
     parseArguments(argc, argv);
 }
 
-// Metodo para analizar los argumentos y derivarlas a otras funciones
+// Metodo para analizar los argumentos y derivarlos a otras funciones
 void parseArguments(int nArg, char *argv[]) {
 
     int *baseS, *baseD, *index;
 
-    char * num;
-
+    char * num, *fractionalSide;
 
     baseS = malloc(sizeof(int));
     baseD = malloc(sizeof(int));
     index = malloc(sizeof(int));
     num = malloc(sizeof(char));
 
+    fractionalSide = malloc(sizeof(char));
+
     *baseS = 10;
     *baseD = 10;
     *index = 1;
     *num = 0;
+    *fractionalSide = 0;
 
     for (*index = 1; *index < nArg; ++*index) {
 
@@ -42,19 +44,23 @@ void parseArguments(int nArg, char *argv[]) {
     }
 
 
+    getFractionalSide(num, fractionalSide);
+    printf("%s", fractionalSide);
+    printf("%i", stringLength(fractionalSide));
+
     if (validateNumber(num, baseS) == 1)
         printf("%s", "Valido");
     else
         printf("%s", "Invalido");
 
 
-
-    printf("\nDatos ingresados --> Numero ingresado: %s. Base origen: %i. Base destino: %i", num, *baseS, *baseD);
+    printf("\nDatos ingresados --> Numero ingresado: %s. Base origen: %i. Base destino: %i", *num++, *baseS, *baseD);
 
     free(baseS);
     free(baseD);
     free(index);
     free(num);
+    free(fractionalSide);
 
 }
 
@@ -93,9 +99,9 @@ void help() {
 // Metodo que valida que el numero corresponda a la base
 int validateNumber(char *a, int *b) {
 
-
- //   printf("%c:  . %i", *a, *b);
- //   printf("%i",(*b));
+    int *flag;
+    flag = malloc(sizeof(int));
+    *flag = 1;
 
     int * toReturn;
     toReturn = malloc(sizeof(int));
@@ -105,25 +111,82 @@ int validateNumber(char *a, int *b) {
 
     else if (*b <= 10) {
 
-        while(*a >= '0' && *a < ('0' + *b))
-            a++;
+        while (*a >= '0' && *a < ('0' + *b) || (*a == '.' && *flag == 1)) {
+
+             if (*a == '.')
+                *flag = 0;
+
+             a++;
+        }
 
     }
 
     else {
+
         while( (*a >= '0' && *a <= ('0' + *b)) ||
-               (*a >= 'A' && *a < ('A' + *b - 10)))
-            a++;
+               (*a >= 'A' && *a < ('A' + *b - 10)) ||
+               (*a == '.' && *flag == 1)) {
+                if (*a == '.')
+                    *flag = 0;
+
+                a++;
+        }
     }
 
 
-   if (*a == '\0' )
+   if (*a == '\0')
       *toReturn = 1;
 
 
    return *toReturn;
 
-   free(toReturn);
+//   free(toReturn);
+}
+
+// Retorna la cantidad de caracteres del String recibido
+int stringLength(char *string) {
+
+    int *length;
+    length = malloc(sizeof(int));
+    *length = 0;
+
+    while (*string != '\0') {
+        string++;
+        *length = *length + 1;
+    }
+
+    return *length;
+}
+
+// Le asigna al puntero destination la parte fraccionaria del numero (si es que la hay)
+void getFractionalSide(char *number, char *destination) {
+
+    char *fractionalSide = destination;
+
+    while (*number != '.') {
+        number++;
+    }
+
+    number++;
+
+    while (*number != '\0') {
+
+        *fractionalSide++ = *number++;
+    }
+
+
+    *fractionalSide = '\0';
+}
+// Le asigna al puntero destination la parte entera del numero
+void getIntegerSide(char *number, char *destination) {
+
+    char *integerSide = destination;
+
+    while (*number != '.' && *number != '\0') {
+        *integerSide++ = *number++;
+    }
+
+    *integerSide = '\0';
 }
 
 
