@@ -1,29 +1,58 @@
 #include "integerPart.h"
-#include "commonMethods.h"
+#include "utilities.h"
 
+int *multiplicationMethodInteger(char *number, int *base, short int *detailed) {
 
-int *multiplicationMethodInteger(char *number, int *base) {
+    int *length, *power, *result, *index, *digit, *instanceResult;
 
-    int *length, *power, *result, *index;
     length = malloc(sizeof(int));
     power = malloc(sizeof(int));
     result = malloc(sizeof(int));
     index = malloc(sizeof(int));
+    digit = malloc(sizeof(int));
+    instanceResult = malloc(sizeof(int));
 
     length = stringLength(number);
 
     *index = *length - 1;
-    *power = 1;
+    *power = 0;
     *result = 0;
+    *digit = 0;
+    *instanceResult = 0;
+
+    if (*detailed)
+        printf("\n --------------------- Inicio del proceso de conversion ---------------------");
 
     for (*index; *index >= 0; *index = *index - 1) {
-        *result = *result + (*transformNumberToDecimal(number + *index) * *power);
-        *power = *power * *base;
+
+        digit = transformNumberToDecimal(number + *index);
+        *instanceResult = (*digit * pow(*base, *power));
+        *result = *result + *instanceResult;
+
+        if (*detailed)
+            printf("\n R%i --> %i * %i^%i = %i\n",*power, *digit, *base, *power, *instanceResult);
+
+        *power = *power + 1;
+    }
+
+    if (*detailed) {
+        *index = *index +1;
+        printf("\n Numero Convertido -->");
+        for (*index; *index < *power; *index = *index + 1){
+            printf(" R%i ",*index);
+            if (*index < *power - 1)
+                printf("+");
+       }
+
+       printf(" = %i",*result);
+       printf("\n ---------------------- Fin del proceso de conversion -----------------------");
     }
 
     free(length);
     free(power);
     free(index);
+    free(digit);
+    free(instanceResult);
 
     return result;
 }
@@ -82,7 +111,7 @@ void reverseString (char *stringToReverse) {
 
 }
 
-char *divisionMethodInteger(char *number, int *base) {
+char *divisionMethodInteger(char *number, int *base, short int *detailed) {
 
     int *transformedNumber, *reminder, *index;
     char *result;

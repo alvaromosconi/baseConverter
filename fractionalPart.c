@@ -1,6 +1,5 @@
 #include "fractionalPart.h"
-#include "commonMethods.h"
-#include <string.h>
+#include "utilities.h"
 
 float *divisionMethodFractional(char *number, int *base) {
 

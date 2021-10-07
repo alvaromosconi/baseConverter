@@ -31,12 +31,6 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
-		<Unit filename="commonMethods.c">
-			<Option compilerVar="CC" />
-		</Unit>
-		<Unit filename="commonMethods.h">
-			<Option target="&lt;{~None~}&gt;" />
-		</Unit>
 		<Unit filename="convert.c">
 			<Option compilerVar="CC" />
 		</Unit>
@@ -49,6 +43,12 @@
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="integerPart.h" />
+		<Unit filename="utilities.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="utilities.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

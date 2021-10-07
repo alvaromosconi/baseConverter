@@ -3,7 +3,7 @@
 #include "convert.h"
 #include "integerPart.h"
 #include "fractionalPart.h"
-#include "commonMethods.h"
+#include "utilities.h"
 
 
 int main(int argc, char * argv[]) {
@@ -22,12 +22,13 @@ int main(int argc, char * argv[]) {
 void parseArguments(int nArg, char *argv[]) {
 
     int *baseS, *baseD, *index;
-
+    short int *detailed;
     char * num, *integerSide, *fractionalSide;
 
     baseS = malloc(sizeof(int));
     baseD = malloc(sizeof(int));
     index = malloc(sizeof(int));
+    detailed = malloc(sizeof(short int));
     num = malloc(sizeof(char));
     fractionalSide = malloc(6 * sizeof(char));
     integerSide = malloc(11 * sizeof(char));
@@ -35,6 +36,7 @@ void parseArguments(int nArg, char *argv[]) {
     *baseS = 10;
     *baseD = 10;
     *index = 1;
+    *detailed = 1;
     *num = 0;
     *fractionalSide = '0';
     *integerSide = '0';
@@ -50,12 +52,14 @@ void parseArguments(int nArg, char *argv[]) {
              *baseS = atoi(argv[++*index]);
         else if (*stringCompare(argv[*index], "-d") == 1)
              *baseD = atoi(argv[++*index]);
+        else
+            help();
     }
 
 
-    printf("Parte Fraccionaria: %s \n", getFractionalSide(num, fractionalSide));
+   // printf("Parte Fraccionaria: %s \n", getFractionalSide(num, fractionalSide));
     //printf("Largo de la parte fraccionaria: %i\n", *stringLength(getFractionalSide(num, fractionalSide)));
-    printf("Parte Entera: %s \n", getIntegerSide(num, integerSide));
+   // printf("Parte Entera: %s \n", getIntegerSide(num, integerSide));
 
     if (*validateNumber(num, baseS) == 1)
         printf("%s", "Valido");
@@ -64,8 +68,8 @@ void parseArguments(int nArg, char *argv[]) {
 
 
     printf("\nDatos ingresados --> Numero ingresado: %s. Base origen: %i. Base destino: %i", num, *baseS, *baseD);
-
-    printf("\n Numero convertido: %s", divisionMethodInteger(getIntegerSide(num, integerSide), baseD));
+   // printf("\n Numero convertido: %i", *multiplicationMethodInteger(getIntegerSide(num, integerSide), baseS, detailed));
+    printf("\n Numero convertido: %s", divisionMethodInteger(getIntegerSide(num, integerSide), baseD, detailed));
     /*
     char *pointer;
     pointer = multiplicationMethodFractional(getFractionalSide(num, fractionalSide), baseD);
@@ -73,6 +77,7 @@ void parseArguments(int nArg, char *argv[]) {
     */
     free(baseS);
     free(baseD);
+    free(detailed);
     free(index);
     free(num);
     free(integerSide);
