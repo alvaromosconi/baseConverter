@@ -33,6 +33,7 @@ int *multiplicationMethodInteger(char *number, int *base, short int *detailed) {
             printf("\n R%i --> %i * %i^%i = %i\n",*power, *digit, *base, *power, *instanceResult);
 
         *power = *power + 1;
+        printf("xd");
     }
 
     if (*detailed) {
