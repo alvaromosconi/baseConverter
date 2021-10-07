@@ -1,7 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include "convert.h"
-
+#include "integerPart.h"
+#include "fractionalPart.h"
 
 int main(int argc, char * argv[]) {
 
@@ -62,6 +63,9 @@ void parseArguments(int nArg, char *argv[]) {
 
 
     printf("\nDatos ingresados --> Numero ingresado: %s. Base origen: %i. Base destino: %i", num, *baseS, *baseD);
+
+  //  printf("\n Numero convertido: %s", fromDecimalBaseToAnyBase(getIntegerSide(num, integerSide), baseD));
+  // printf("\n Numero convertido: %s", fractionalMultiplicationMethod(getFractionalSide(num, fractionalSide), baseD));
 
     free(baseS);
     free(baseD);
