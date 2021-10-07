@@ -3,12 +3,13 @@
 #include "convert.h"
 #include "integerPart.h"
 #include "fractionalPart.h"
+#include "commonMethods.h"
+
 
 int main(int argc, char * argv[]) {
 
     parseArguments(argc, argv);
 
-    return EXIT_SUCCESS;
 }
 
 /**
@@ -64,9 +65,12 @@ void parseArguments(int nArg, char *argv[]) {
 
     printf("\nDatos ingresados --> Numero ingresado: %s. Base origen: %i. Base destino: %i", num, *baseS, *baseD);
 
-  //  printf("\n Numero convertido: %s", fromDecimalBaseToAnyBase(getIntegerSide(num, integerSide), baseD));
-  // printf("\n Numero convertido: %s", fractionalMultiplicationMethod(getFractionalSide(num, fractionalSide), baseD));
-
+    printf("\n Numero convertido: %s", divisionMethodInteger(getIntegerSide(num, integerSide), baseD));
+    /*
+    char *pointer;
+    pointer = multiplicationMethodFractional(getFractionalSide(num, fractionalSide), baseD);
+    printf("\n Numero convertido: %s", pointer);
+    */
     free(baseS);
     free(baseD);
     free(index);
@@ -168,25 +172,6 @@ int *validateNumber(const char *number, int *base) {
    return toReturn;
 }
 
-/**
- * Funcion encargada de contar la cantidad de caracteres de una cadena de caracteres.
- * @param string
-          Cadena de caracteres ingresada por el usuario.
- * @return Cantidad de caracteres de la cadena recibida.
- */
-int *stringLength(char *string) {
-
-    int *length;
-    length = malloc(sizeof(int));
-    *length = 0;
-
-    while (*string != '\0') {
-        string++;
-        *length = *length + 1;
-    }
-
-    return length;
-}
 
 /**
  * Funcion encargada de extraer la parte fraccionaria del numero ingresado.

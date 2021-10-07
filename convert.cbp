@@ -31,10 +31,24 @@
 		<Compiler>
 			<Add option="-Wall" />
 		</Compiler>
+		<Unit filename="commonMethods.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="commonMethods.h">
+			<Option target="&lt;{~None~}&gt;" />
+		</Unit>
 		<Unit filename="convert.c">
 			<Option compilerVar="CC" />
 		</Unit>
 		<Unit filename="convert.h" />
+		<Unit filename="fractionalPart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="fractionalPart.h" />
+		<Unit filename="integerPart.c">
+			<Option compilerVar="CC" />
+		</Unit>
+		<Unit filename="integerPart.h" />
 		<Extensions />
 	</Project>
 </CodeBlocks_project_file>

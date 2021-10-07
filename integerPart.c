@@ -1,39 +1,29 @@
 #include "integerPart.h"
-
-int *transformNumberToDecimal (char *characterToTransform) {
-
-    int *digitToReturn;
-    digitToReturn = malloc(sizeof(int));
-    *digitToReturn = 0;
-
-    if (*characterToTransform >= '0' && *characterToTransform <= '9')
-        *digitToReturn = (int) *characterToTransform - 48;
-
-    else if ( (*characterToTransform >= 'a' && *characterToTransform <= 'f'))
-         *digitToReturn = (int) *characterToTransform - 87;
-
-    else if (*characterToTransform >= 'A' && *characterToTransform <= 'F')
-         *digitToReturn = (int) *characterToTransform - 55;
-
-    return digitToReturn;
-}
+#include "commonMethods.h"
 
 
-int *fromAnyBaseToDecimal(char *number, int *base) {
+int *multiplicationMethodInteger(char *number, int *base) {
 
     int *length, *power, *result, *index;
-    length = power = result = index = malloc(sizeof(int));
+    length = malloc(sizeof(int));
+    power = malloc(sizeof(int));
+    result = malloc(sizeof(int));
+    index = malloc(sizeof(int));
 
-    length = strlen(number);
+    length = stringLength(number);
 
     *index = *length - 1;
     *power = 1;
     *result = 0;
 
-    for (*index; *index >= 0; --*index) {
-        *result = *result + *transformNumberToDecimal(number + *index) * *power;
+    for (*index; *index >= 0; *index = *index - 1) {
+        *result = *result + (*transformNumberToDecimal(number + *index) * *power);
         *power = *power * *base;
     }
+
+    free(length);
+    free(power);
+    free(index);
 
     return result;
 }
@@ -72,11 +62,12 @@ void reverseString (char *stringToReverse) {
     int *i, *length;
     char *temporalChar;
 
-    i = length = malloc(sizeof(int));
+    i = malloc(sizeof(int));
+    length = malloc(sizeof(int));
     temporalChar = malloc(sizeof(char));
 
     *i = 0;
-    *length = strlen(stringToReverse);
+    length = stringLength(stringToReverse);
     *temporalChar = '0';
 
     for (*i; *i < *length / 2; ++*i) {
@@ -84,23 +75,31 @@ void reverseString (char *stringToReverse) {
         *(stringToReverse + *i) = *(stringToReverse + (*length - *i - 1));
         *(stringToReverse + (*length - *i - 1)) = *temporalChar;
     }
+
+    free(i);
+    free(length);
+    free(temporalChar);
+
 }
 
-char *fromDecimalBaseToAnyBase(char *number, int *base) {
+char *divisionMethodInteger(char *number, int *base) {
 
     int *transformedNumber, *reminder, *index;
-    char* result;
+    char *result;
 
-    transformedNumber = reminder = index = malloc(sizeof(int));
+    transformedNumber = malloc(sizeof(int));
+    reminder = malloc(sizeof(int));
+    index = malloc(sizeof(int));
     result = malloc(20 * sizeof(char));
 
     *transformedNumber = atoi(number);
-    *reminder = *index = 0;
+    *reminder = 0;
+    *index = 0;
 
     while (*transformedNumber != 0) {
 
         *reminder = *transformedNumber % *base;
-        printf("numero: %i, resto: %i\n",*transformedNumber, *reminder);
+        // printf("numero: %i, resto: %i\n",*transformedNumber, *reminder);
         *transformedNumber /= *base;
         *index = *index + 1;
         setEquivalentDigit((result + *index), reminder);
@@ -109,6 +108,10 @@ char *fromDecimalBaseToAnyBase(char *number, int *base) {
     reverseString(result);
 
     *(result + *index) = '\0';
+
+    free(transformedNumber);
+    free(reminder);
+    free(index);
 
     return result;
 }
