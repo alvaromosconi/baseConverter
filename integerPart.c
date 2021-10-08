@@ -3,14 +3,14 @@
 
 int *multiplicationMethodInteger(char *number, int *base, short int *detailed) {
 
-    int *length, *power, *result, *index, *digit, *instanceResult;
+    int *length, *power, *result, *index, *digit, *temporaryResult;
 
     length = malloc(sizeof(int));
     power = malloc(sizeof(int));
     result = malloc(sizeof(int));
     index = malloc(sizeof(int));
     digit = malloc(sizeof(int));
-    instanceResult = malloc(sizeof(int));
+    temporaryResult = malloc(sizeof(int));
 
     length = stringLength(number);
 
@@ -18,7 +18,7 @@ int *multiplicationMethodInteger(char *number, int *base, short int *detailed) {
     *power = 0;
     *result = 0;
     *digit = 0;
-    *instanceResult = 0;
+    *temporaryResult = 0;
 
     if (*detailed)
         printf("\n --------------------- Inicio del proceso de conversion ---------------------");
@@ -26,14 +26,13 @@ int *multiplicationMethodInteger(char *number, int *base, short int *detailed) {
     for (*index; *index >= 0; *index = *index - 1) {
 
         digit = transformNumberToDecimal(number + *index);
-        *instanceResult = (*digit * pow(*base, *power));
-        *result = *result + *instanceResult;
+        *temporaryResult = (*digit * pow(*base, *power));
+        *result = *result + *temporaryResult;
 
         if (*detailed)
-            printf("\n R%i --> %i * %i^%i = %i\n",*power, *digit, *base, *power, *instanceResult);
+            printf("\n R%i --> %i * %i^%i = %i\n",*power, *digit, *base, *power, *temporaryResult);
 
         *power = *power + 1;
-        printf("xd");
     }
 
     if (*detailed) {
@@ -53,7 +52,7 @@ int *multiplicationMethodInteger(char *number, int *base, short int *detailed) {
     free(power);
     free(index);
     free(digit);
-    free(instanceResult);
+    free(temporaryResult);
 
     return result;
 }
@@ -126,18 +125,43 @@ char *divisionMethodInteger(char *number, int *base, short int *detailed) {
     *reminder = 0;
     *index = 0;
 
+
+    if (*detailed)
+        printf("\n\n --------------------- Inicio del proceso de conversion ---------------------\n\n");
+
     while (*transformedNumber != 0) {
 
+        if (*detailed)
+            printf("%i.   %i / %i",(*index)+1, *transformedNumber, *base);
+
         *reminder = *transformedNumber % *base;
-        // printf("numero: %i, resto: %i\n",*transformedNumber, *reminder);
         *transformedNumber /= *base;
-        *index = *index + 1;
         setEquivalentDigit((result + *index), reminder);
+
+        if (*detailed)
+            printf(" ------ Resto%i = %i <=> (%c)b%i ------- Cociente: %i\n",(*index)+1, *reminder, *(result + *index), *base,*(transformedNumber));
+
+        *index = *index + 1;
     }
 
+    *(result + *index) = '\0';
     reverseString(result);
 
-    *(result + *index) = '\0';
+    if (*detailed) {
+
+        printf("\nNumero Convertido -->");
+
+        for (*index; *index > 0; (*index = *index -1)) {
+
+            printf(" Resto%i ",*index);
+
+            if (*index > 1)
+                printf("U");
+        }
+         printf("= (%s)b%i", result, *base);
+         printf("\n\n ---------------------- Fin del proceso de conversion -----------------------");
+    }
+
 
     free(transformedNumber);
     free(reminder);

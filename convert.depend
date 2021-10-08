@@ -3,7 +3,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1633642991 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.c
+1633705965 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.c
 	<stdio.h>
 	<stdlib.h>
 	"convert.h"
@@ -17,13 +17,13 @@
 
 1633566611 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.h
 
-1633642249 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.c
+1633705311 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.c
 	"fractionalPart.h"
 	"utilities.h"
 
 1633617237 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.h
 
-1633642974 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.c
+1633706088 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.c
 	"integerPart.h"
 	"utilities.h"
 

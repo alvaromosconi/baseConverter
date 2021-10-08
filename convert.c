@@ -59,7 +59,7 @@ void parseArguments(int nArg, char *argv[]) {
 
    // printf("Parte Fraccionaria: %s \n", getFractionalSide(num, fractionalSide));
     //printf("Largo de la parte fraccionaria: %i\n", *stringLength(getFractionalSide(num, fractionalSide)));
-   // printf("Parte Entera: %s \n", getIntegerSide(num, integerSide));
+    //printf("Parte Entera: %s \n", getIntegerSide(num, integerSide));
 
     if (*validateNumber(num, baseS) == 1)
         printf("%s", "Valido");
@@ -68,13 +68,16 @@ void parseArguments(int nArg, char *argv[]) {
 
 
     printf("\nDatos ingresados --> Numero ingresado: %s. Base origen: %i. Base destino: %i", num, *baseS, *baseD);
-   // printf("\n Numero convertido: %i", *multiplicationMethodInteger(getIntegerSide(num, integerSide), baseS, detailed));
-    printf("\n Numero convertido: %s", divisionMethodInteger(getIntegerSide(num, integerSide), baseD, detailed));
-    /*
-    char *pointer;
-    pointer = multiplicationMethodFractional(getFractionalSide(num, fractionalSide), baseD);
-    printf("\n Numero convertido: %s", pointer);
-    */
+
+  float *pointer;
+  pointer = divisionMethodFractional(getFractionalSide(num, integerSide), baseS, detailed);
+  //printf("\n Numero convertido: %f", *pointer);
+ //   printf("\n Numero convertido: %s", divisionMethodInteger(getIntegerSide(num, integerSide), baseD, detailed));
+
+    //char *pointer;
+    //pointer = multiplicationMethodFractional(getFractionalSide(num, fractionalSide), baseD);
+    //printf("\n Numero convertido: %s", pointer);
+
     free(baseS);
     free(baseD);
     free(detailed);
