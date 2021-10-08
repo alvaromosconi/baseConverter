@@ -3,7 +3,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1633705965 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.c
+1633732229 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.c
 	<stdio.h>
 	<stdlib.h>
 	"convert.h"
@@ -15,19 +15,25 @@
 	<stdio.h>
 	<stdlib.h>
 
-1633566611 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.h
+1633731413 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.h
 
-1633705311 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.c
+1633726619 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.c
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
 	"fractionalPart.h"
 	"utilities.h"
 
-1633617237 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.h
+1633723819 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.h
 
-1633706088 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.c
+1633731833 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.c
+	<stdlib.h>
+	<stdio.h>
+	<math.h>
 	"integerPart.h"
 	"utilities.h"
 
-1633642935 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.h
+1633722877 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.h
 
 1633567040 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.c
 	"integerPart.h"
@@ -36,8 +42,8 @@
 
 1633617417 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\commonmethods.h
 
-1633642262 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\utilities.c
+1633723667 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\utilities.c
 	"utilities.h"
 
-1633617417 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\utilities.h
+1633723686 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\utilities.h
 

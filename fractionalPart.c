@@ -1,9 +1,12 @@
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
 #include "fractionalPart.h"
 #include "utilities.h"
 
 float *divisionMethodFractional(char *number, int *base, short int *detailed) {
 
-    int* length, *negativePower, *digit, *index;
+    int *length, *negativePower, *digit, *index;
     float *temporaryResult, *result;
 
     length = malloc(sizeof(int));
@@ -22,7 +25,7 @@ float *divisionMethodFractional(char *number, int *base, short int *detailed) {
     *temporaryResult = 0;
 
     if (*detailed)
-        printf("\n\n --------------------- Inicio del proceso de conversion ---------------------\n");
+        printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE FRACCIONARIA) ---------------------\n");
 
     while (*index < *length) {
 
@@ -39,10 +42,10 @@ float *divisionMethodFractional(char *number, int *base, short int *detailed) {
 
     if (*detailed) {
 
-        *negativePower = *negativePower + 1;
+
         printf("\n Numero Convertido --> ");
 
-        for (*negativePower; *negativePower < 0; *negativePower = *negativePower + 1){
+        for (*negativePower = *negativePower + 1; *negativePower < 0; *negativePower = *negativePower + 1){
 
             printf("R%i",*negativePower);
 
@@ -50,46 +53,81 @@ float *divisionMethodFractional(char *number, int *base, short int *detailed) {
                 printf(" + ");
        }
 
-       printf(" = %f\n",*result);
-       printf("\n ---------------------- Fin del proceso de conversion -----------------------");
+       printf(" = (%f)b10\n",*result);
+       printf("\n ---------------------- FIN DE LA CONVERSION (PARTE FRACCIONARIA) -----------------------");
     }
-
 
     free(length);
     free(index);
     free(digit);
     free(negativePower);
+    free(temporaryResult);
 
     return result;
 }
 
-char *multiplicationMethodFractional(char *number, int *base) {
+char *multiplicationMethodFractional(char *number, int *base, short int *detailed) {
 
-    int* transformedNumber, *reminder, *index;
-    char* result;
+    int *index, *integerPart, *length;
+    double *transformedNumber, *multiplicationResult;
+    char* finalResult;
 
-    transformedNumber = malloc(sizeof(int));
-    reminder = malloc(sizeof(int));
     index = malloc(sizeof(int));
-    result = malloc(20*sizeof(char));
+    integerPart = malloc(sizeof(int));
+    multiplicationResult = malloc(sizeof(double));
+    transformedNumber = malloc(sizeof(double));
+    finalResult = malloc(11 * sizeof(char));
 
-    *transformedNumber = atoi(number);
+    length = stringLength(number);
+
+    *transformedNumber = (double) atoi(number) / pow (10, *length);
     *index = 0;
+    *integerPart = 0;
 
-    while (*index < 10) {
+    if (*detailed)
+        printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE FRACCIONARIA) ---------------------\n");
 
-        *reminder = (*transformedNumber * *base) / 100000;
-     //   printf("numero: %i, resto: %i\n",*transformedNumber, *reminder);
-        *transformedNumber = (*transformedNumber * *base) % 100000;
+    while (*index < 11) {
+
+        *multiplicationResult = (int) (*transformedNumber * *base);
+
+        if (*detailed)
+            printf("\nR%i --> %lf * %i = %i\t",(*index), *transformedNumber, *base, (int) *multiplicationResult);
+
+        *transformedNumber = (*transformedNumber * *base) - *multiplicationResult;
+        *integerPart = *multiplicationResult;
+        setEquivalentDigit((finalResult + *index), integerPart);
+
+        if (*detailed)
+            printf("<==> (%c)b%i", *(finalResult + *index), *base);
+
         *index = *index + 1;
-        setEquivalentDigit((result + *index), reminder);
     }
 
-    *(result + *index) = '\0';
+    if (*detailed) {
 
-    free(transformedNumber);
-    free(reminder);
+        printf("\n\nNumero Convertido --> ");
+
+        int *temporalIndex;
+        temporalIndex = malloc(sizeof(int));
+
+        for (*temporalIndex = 0; *temporalIndex < *index; (*temporalIndex)++)
+
+            printf("[Resto%i]",*temporalIndex);
+
+         printf(" = (%s)b%i\n", finalResult, *base);
+         printf("\n ---------------------- FIN DE LA CONVERSION (PARTE FRACCIONARIA) -----------------------\n");
+
+        free(temporalIndex);
+    }
+
+    *(finalResult + *index - 1) = '\0';
+
+    free(multiplicationResult);
     free(index);
+    free(transformedNumber);
+    free(integerPart);
+    free(length);
 
-    return result;
+    return finalResult;
 }

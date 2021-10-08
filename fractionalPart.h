@@ -2,9 +2,7 @@
 
 #define FRACTIONALPART_H_INCLUDED
 
-float *fractionalDivisionMethod(char *number, int *base);
-char *fractionalMultiplicationMethod(char *number, int *base);
-
-
+float *divisionMethodFractional(char *number, int *base, short int *detailed);
+char *multiplicationMethodFractional(char *number, int *base, short int *detailed);
 
 #endif // FRACTIONALPART_H_INCLUDED

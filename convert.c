@@ -5,11 +5,9 @@
 #include "fractionalPart.h"
 #include "utilities.h"
 
-
 int main(int argc, char * argv[]) {
 
-    parseArguments(argc, argv);
-
+    exit(*parseArguments(argc, argv));
 }
 
 /**
@@ -18,28 +16,29 @@ int main(int argc, char * argv[]) {
           Indica el numero de argumentos ingresados por el usuario.
  * @param argv
           Contiene los argumentos ingresados por el usuario.
+ * @return
  */
-void parseArguments(int nArg, char *argv[]) {
+short int *parseArguments(int nArg, char *argv[]) {
 
     int *baseS, *baseD, *index;
-    short int *detailed;
-    char * num, *integerSide, *fractionalSide;
+    short int *detailed, *valueToReturn;
+    char *num, *integerPart, *fractionalPart;;
 
     baseS = malloc(sizeof(int));
     baseD = malloc(sizeof(int));
     index = malloc(sizeof(int));
     detailed = malloc(sizeof(short int));
     num = malloc(sizeof(char));
-    fractionalSide = malloc(6 * sizeof(char));
-    integerSide = malloc(11 * sizeof(char));
+    valueToReturn = malloc(sizeof(short int));
+
+    integerPart = malloc(10 * sizeof(char));
+    fractionalPart = malloc(5 * sizeof(char));
 
     *baseS = 10;
     *baseD = 10;
     *index = 1;
-    *detailed = 1;
+    *detailed = 0;
     *num = 0;
-    *fractionalSide = '0';
-    *integerSide = '0';
 
     for (*index = 1; *index < nArg; ++*index) {
 
@@ -52,68 +51,92 @@ void parseArguments(int nArg, char *argv[]) {
              *baseS = atoi(argv[++*index]);
         else if (*stringCompare(argv[*index], "-d") == 1)
              *baseD = atoi(argv[++*index]);
+        else if (*stringCompare(argv[*index], "-v") == 1)
+             *detailed = 1;
         else
             help();
     }
 
+    integerPart = getIntegerSide(num, integerPart);
+    fractionalPart = getFractionalSide(num, fractionalPart);
 
-   // printf("Parte Fraccionaria: %s \n", getFractionalSide(num, fractionalSide));
-    //printf("Largo de la parte fraccionaria: %i\n", *stringLength(getFractionalSide(num, fractionalSide)));
-    //printf("Parte Entera: %s \n", getIntegerSide(num, integerSide));
-
-    if (*validateNumber(num, baseS) == 1)
-        printf("%s", "Valido");
-    else
-        printf("%s", "Invalido");
-
-
-    printf("\nDatos ingresados --> Numero ingresado: %s. Base origen: %i. Base destino: %i", num, *baseS, *baseD);
-
-  float *pointer;
-  pointer = divisionMethodFractional(getFractionalSide(num, integerSide), baseS, detailed);
-  //printf("\n Numero convertido: %f", *pointer);
- //   printf("\n Numero convertido: %s", divisionMethodInteger(getIntegerSide(num, integerSide), baseD, detailed));
-
-    //char *pointer;
-    //pointer = multiplicationMethodFractional(getFractionalSide(num, fractionalSide), baseD);
-    //printf("\n Numero convertido: %s", pointer);
+    if (nArg > 1) {
+        if (*baseD < 2 || *baseD > 16) {
+            printf("\n DATOS INGRESADOS INCORRECTOS :: La base de destino debe estar en el rango [2,16].\n");
+            *valueToReturn = EXIT_FAILURE;
+        }
+        else if (*stringLength(integerPart) > 10) {
+            printf("\n DATOS INGRESADOS INCORRECTOS :: El maximo de digitos para la parte entera es 10.\n");
+            *valueToReturn = EXIT_FAILURE;
+        }
+        else if (*stringLength(fractionalPart) > 5) {
+            printf("\n DATOS INGRESADOS INCORRECTOS :: El maximo de digitos para la parte fraccionaria es 5.\n");
+            *valueToReturn = EXIT_FAILURE;
+        }
+        else if (*validateNumber(num, baseS) == 1)
+            buildNumber(integerPart, fractionalPart, baseS, baseD, detailed);
+        else {
+            printf("\n DATOS INGRESADOS INCORRECTOS :: El numero y/o la base origen ingresados son incorrectos.\n");
+            *valueToReturn = EXIT_FAILURE;
+        }
+    }
 
     free(baseS);
     free(baseD);
     free(detailed);
     free(index);
     free(num);
-    free(integerSide);
-    free(fractionalSide);
+    free(integerPart);
+    free(fractionalPart);
+
+    return valueToReturn;
 }
 
-/**
- * Funcion encargada de comparar cadena de caracteres (strings).
- * @param a
-          Cadena de caracteres.
- * @param b
-          Cadena de caracteres.
- * @return 1 si las cadenas son iguales, 0 si son distintas.
- *
- */
-int *stringCompare(const char *a, const char *b) {
+void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *destinationBase, short int *detailed) {
 
-   int *toReturn;
-   toReturn = malloc(sizeof(int));
-   *toReturn = 0;
+    char *fromDecimal_integerPart, *fromDecimal_fractionalPart;
+    int *fromAnyBase_integerPart;
+    float *fromAnyBase_fractionalPart;
+    // Si la base de origen es 10 y la de destino es cualquiera:
+    if (*sourceBase == 10 && *destinationBase != 10) {
 
-   while (*a == *b) {
-      if (*a == '\0' || *b == '\0')
-         break;
+        if (*integerPart == '0')        // Si el numero es 0 --> No hay nada que hacer.
+            fromDecimal_integerPart = integerPart;
+        else                            // Caso contrario --> Se efectua la conversion correspondiente.
+            fromDecimal_integerPart = divisionMethodInteger(integerPart, destinationBase, detailed);
 
-      a++;
-      b++;
-   }
+        fromDecimal_fractionalPart = multiplicationMethodFractional(fractionalPart, destinationBase, detailed);
+        printf("\n\n NUMERO OBTENIDO: (%s.%s)b%i \n", fromDecimal_integerPart, fromDecimal_fractionalPart, *destinationBase);
+    }
+    // Si la base de origen es cualquiera y la de destino es 10
+    else if (*sourceBase != 10 && *destinationBase == 10) {
+        fromAnyBase_integerPart = multiplicationMethodInteger(integerPart, sourceBase, detailed);
+        fromAnyBase_fractionalPart = divisionMethodFractional(fractionalPart, sourceBase, detailed);
+        printf("\n\n NUMERO OBTENIDO: (%f)b%i\n", *fromAnyBase_integerPart + *fromAnyBase_fractionalPart, *destinationBase);
+    }
+    // De cualquier base origen a cualquier base destino [2,16]
+    else {
+        // Primero convertimos a decimal
+        fromAnyBase_integerPart = multiplicationMethodInteger(integerPart, sourceBase, detailed);
+        fromAnyBase_fractionalPart = divisionMethodFractional(fractionalPart, sourceBase, detailed);
+        fromDecimal_integerPart = malloc(20*sizeof(char));
+        fromDecimal_fractionalPart = malloc(10*sizeof(char));
+        // Transformamos la parte entera y la parte fraccionaria a un puntero char
+        itoa(*fromAnyBase_integerPart, fromDecimal_integerPart, 10);
+        gcvt(*fromAnyBase_fractionalPart, 10, fromDecimal_fractionalPart);
+        // Formateamos la parte fraccionaria (cortamos el digito entero y el .)
+        getFractionalSide(fromDecimal_fractionalPart, fromDecimal_fractionalPart);
 
-   if (*a == '\0' && *b == '\0')
-      *toReturn = 1;
+        // Printeamos utilizando los metodos de conversion de base decimal a base destino
+        printf("\n\n NUMERO OBTENIDO: (%s.%s)b%i \n",  divisionMethodInteger(fromDecimal_integerPart, destinationBase, detailed),
+                                                       multiplicationMethodFractional(fromDecimal_fractionalPart, destinationBase, detailed),
+                                                      *destinationBase);
+    }
 
-    return toReturn;
+    free(fromDecimal_integerPart);
+    free(fromDecimal_fractionalPart);
+    free(fromAnyBase_integerPart);
+    free(fromAnyBase_fractionalPart);
 }
 
 /**
@@ -122,12 +145,12 @@ int *stringCompare(const char *a, const char *b) {
 void help() {
 
     printf("\n Bienvenido al convertidor de bases programado en C.\n");
-    printf("\n A continuacion se indican las opciones de invocacion del programa:\n\n\t");
-    printf("-n numero real :: Indica el numero al que se le hara el cambio de base. Maxima cantidad de digitos enteros: 10. Maxima cantidad de digitos fraccionarios: 5.\n\t");
-    printf("-s base origen :: Especifica la base a la que pertence el numero ingresado. Bases permitidas: [2,16]. \n\t");
-    printf("-d base destino ::  Especifica la base a la que pertence el numero ingresado. Bases permitidas: [2,16]. \n\t");
-    printf("-v computos intermedios :: Permite visualizar en forma secuencial y ordenada los computos realizados para cambiar el numero ingresado de la base origen a la base destino. \n\t");
-    printf("-h ayuda :: Provee informacion para poder utilizar el programa de forma correcta. \n\t");
+    printf("\n A continuacion se indican las opciones de invocacion del programa:\n\n");
+    printf("\t-n numero real :: Indica el numero al que se le hara el cambio de base. Maxima cantidad de digitos enteros: 10. Maxima cantidad de digitos fraccionarios: 5.\n");
+    printf("\t-s base origen :: Especifica la base a la que pertence el numero ingresado. Bases permitidas: [2,16]. \n");
+    printf("\t-d base destino ::  Especifica la base a la que pertence el numero ingresado. Bases permitidas: [2,16]. \n");
+    printf("\t-v computos intermedios :: Permite visualizar en forma secuencial y ordenada los computos realizados para cambiar el numero ingresado de la base origen a la base destino. \n");
+    printf("\t-h ayuda :: Provee informacion para poder utilizar el programa de forma correcta. \n");
     exit(0);
 }
 
@@ -154,7 +177,7 @@ int *validateNumber(const char *number, int *base) {
 
     else if (*base <= 10)
 
-        while (*number >= '0' && *number < ('0' + *base) || (*number == '.' && *flag == 1)) {
+        while ( (*number >= '0' && *number < ('0' + *base)) || (*number == '.' && *flag == 1)) {
 
              if (*number == '.')
                 *flag = 0;

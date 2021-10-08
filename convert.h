@@ -6,9 +6,9 @@
 
 int main(int argc, char * argv[]);
 
-void parseArguments(int nArg, char *argv[]);
+short int *parseArguments(int nArg, char *argv[]);
 
-int *stringCompare(const char *a, const char *b);
+void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *destinationBase, short int *detailed);
 
 void help();
 

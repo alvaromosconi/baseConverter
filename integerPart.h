@@ -6,8 +6,6 @@ int *transformNumberToDecimal (char *characterToTransform);
 
 int *multiplicationMethodInteger(char *number, int *base, short int *detailed);
 
-int *getLengthOfNumber(int *number);
-
 void setEquivalentDigit(char *currentDigit, int *reminder);
 
 void reverseString (char *stringToReverse);
