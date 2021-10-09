@@ -24,20 +24,19 @@ int main(int argc, char * argv[]) {
           Indica el numero de argumentos ingresados por el usuario.
  * @param argv
           Puntero a arreglo de punteros (Contiene los argumentos ingresados por el usuario).
- * @return Puntero a entero corto que almacena un 0 si la ejecución fue exitosa, 1 si se produjo algun error.
+ * @return Puntero a entero que almacena un 0 si la ejecución fue exitosa, 1 si se produjo algun error.
  */
-short int *parseArguments(int nArg, char *argv[]) {
+int *parseArguments(int nArg, char *argv[]) {
 
-    int *baseS, *baseD, *index;
-    short int *detailed, *valueToReturn;
+    int *baseS, *baseD, *index, *detailed, *valueToReturn;
     char *num, *integerPart, *fractionalPart;;
 
     baseS = malloc(sizeof(int));
     baseD = malloc(sizeof(int));
     index = malloc(sizeof(int));
-    detailed = malloc(sizeof(short int));
+    detailed = malloc(sizeof(int));
     num = malloc(sizeof(char));
-    valueToReturn = malloc(sizeof(short int));
+    valueToReturn = malloc(sizeof(int));
 
     integerPart = malloc(10 * sizeof(char));
     fractionalPart = malloc(5 * sizeof(char));
@@ -47,6 +46,7 @@ short int *parseArguments(int nArg, char *argv[]) {
     *index = 1;
     *detailed = 0;
     *num = 0;
+
 
     // Bucle encargado de analizar los argumentos ingresados por consola para luego almacenarlos.
     for (*index = 1; *index < nArg; ++*index) {
@@ -185,13 +185,13 @@ void help() {
           Puntero a entero que almacena el numero ingresado por el usuario (cadena de caracteres).
  * @param base
           Puntero a entero que almacena la base numerica origen ingresada por el usuario.
- * @return Puntero a entero corto que almacena 1 si el numero corresponde a la base, 0 en caso contrario.
+ * @return Puntero a entero que almacena 1 si el numero corresponde a la base, 0 en caso contrario.
  *
  */
-short int *validateNumber(const char *number, const int *base) {
+int *validateNumber(const char *number, const int *base) {
 
     int *flag;
-    int * toReturn;
+    int *toReturn;
 
     toReturn = malloc(sizeof(int));
     flag = malloc(sizeof(int));

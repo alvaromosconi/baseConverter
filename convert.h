@@ -6,13 +6,13 @@
 
 int main(int argc, char * argv[]);
 
-short int *parseArguments(int nArg, char *argv[]);
+int *parseArguments(int nArg, char *argv[]);
 
 void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *destinationBase, short int *detailed);
 
 void help();
 
-short int *validateNumber(const char *number, const int *base);
+int *validateNumber(const char *number, const int *base);
 
 char *getFractionalSide(const char *number, char *destination);
 
