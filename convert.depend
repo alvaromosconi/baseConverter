@@ -3,7 +3,7 @@
 	<stdio.h>
 	<stdlib.h>
 
-1633797791 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.c
+1633821577 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.c
 	<stdio.h>
 	<stdlib.h>
 	"convert.h"
@@ -15,25 +15,25 @@
 	<stdio.h>
 	<stdlib.h>
 
-1633794422 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.h
+1633812268 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\convert.h
 
-1633792503 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.c
+1633821351 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.c
 	<stdlib.h>
 	<stdio.h>
 	<math.h>
 	"fractionalPart.h"
 	"utilities.h"
 
-1633791798 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.h
+1633812295 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\fractionalpart.h
 
-1633792751 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.c
+1633821365 source:c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.c
 	<stdlib.h>
 	<stdio.h>
 	<math.h>
 	"integerPart.h"
 	"utilities.h"
 
-1633722877 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.h
+1633812323 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.h
 
 1633567040 c:\users\alvar\desktop\Álvaro\organización de computadoras\practicos\practico b\convertidor\integerpart.c
 	"integerPart.h"

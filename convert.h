@@ -8,7 +8,7 @@ int main(int argc, char * argv[]);
 
 int *parseArguments(int nArg, char *argv[]);
 
-void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *destinationBase, short int *detailed);
+void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *destinationBase, int *detailed);
 
 void help();
 

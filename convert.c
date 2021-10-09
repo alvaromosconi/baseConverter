@@ -15,10 +15,11 @@
  */
 int main(int argc, char * argv[]) {
 
-    if (argc > 1)
-        exit(*parseArguments(argc, argv));
+                                            // Si ingreso solo el nombre del programa
+    if (argc == 1)
+        help();                             // Imprimir la ayuda
     else
-        exit(EXIT_SUCCESS);
+        exit(*parseArguments(argc, argv));
 }
 
 /**
@@ -50,7 +51,6 @@ int *parseArguments(int nArg, char *argv[]) {
     *detailed = 0;
     *num = 0;
 
-
     // Bucle encargado de analizar los argumentos ingresados por consola para luego almacenarlos.
     for (*index = 1; *index < nArg; ++*index) {
         // Precedencia del help.
@@ -66,14 +66,16 @@ int *parseArguments(int nArg, char *argv[]) {
              *detailed = 1;
         else
             help();
+
     }
 
     integerPart = getIntegerSide(num, integerPart);
     fractionalPart = getFractionalSide(num, fractionalPart);
 
     // Verificacion de las bases
+
     if (*baseD < 2 || *baseS < 2 || *baseD > 16 || *baseS > 16) {
-        printf("\n DATOS INGRESADOS INCORRECTOS :: La base de destino debe estar en el rango [2,16].\n");
+        printf("\n DATOS INGRESADOS INCORRECTOS :: La base de origen y/o destino deben estar en el rango [2,16].\n");
         *valueToReturn = EXIT_FAILURE;
     } // Verificacion del largo de la parte entera
     else if (*stringLength(integerPart) > 10) {
@@ -119,7 +121,7 @@ int *parseArguments(int nArg, char *argv[]) {
           Puntero a entero corto que almacena un 1 si el usuario ingreso el parametro "-v", 0 si el usuario no ingreso el parametro "-v".
  *
  */
-void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *destinationBase, short int *detailed) {
+void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *destinationBase, int *detailed) {
 
     char *fromDecimal_integerPart, *fromDecimal_fractionalPart;
     int *fromAnyBase_integerPart;
@@ -127,27 +129,29 @@ void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *
     // Si la base de origen es 10 y la de destino es cualquiera:
     if (*sourceBase == 10 && *destinationBase != 10) {
 
-        if (*integerPart == '0')        // Si el numero es 0 --> No hay nada que hacer.
-            fromDecimal_integerPart = integerPart;
-        else                            // Caso contrario --> Se efectua la conversion correspondiente.
-            fromDecimal_integerPart = divisionMethodInteger(integerPart, destinationBase, detailed);
-
+        // Se producen los llamados para convertir la parte entera y la parte fraccionaria
+        fromDecimal_integerPart = divisionMethodInteger(integerPart, destinationBase, detailed);                                                              // Caso contrario --> Se efectua la conversion correspondiente.
         fromDecimal_fractionalPart = multiplicationMethodFractional(fractionalPart, destinationBase, detailed);
+
         printf("\n\n NUMERO OBTENIDO: (%s.%s)b%i \n", fromDecimal_integerPart, fromDecimal_fractionalPart, *destinationBase);
     }
     // Si la base de origen es cualquiera y la de destino es 10
     else if (*sourceBase != 10 && *destinationBase == 10) {
+
+        // Se producen los llamados para convertir la parte entera y la parte fraccionaria
         fromAnyBase_integerPart = multiplicationMethodInteger(integerPart, sourceBase, detailed);
         fromAnyBase_fractionalPart = divisionMethodFractional(fractionalPart, sourceBase, detailed);
+
         printf("\n\n NUMERO OBTENIDO: (%f)b%i\n", *fromAnyBase_integerPart + *fromAnyBase_fractionalPart, *destinationBase);
     }
     // De cualquier base origen a cualquier base destino [2,16]
     else {
+
+        fromDecimal_integerPart = malloc(20*sizeof(char));
+        fromDecimal_fractionalPart = malloc(10*sizeof(char));
         // Primero convertimos a decimal
         fromAnyBase_integerPart = multiplicationMethodInteger(integerPart, sourceBase, detailed);
         fromAnyBase_fractionalPart = divisionMethodFractional(fractionalPart, sourceBase, detailed);
-        fromDecimal_integerPart = malloc(20*sizeof(char));
-        fromDecimal_fractionalPart = malloc(10*sizeof(char));
         // Transformamos la parte entera y la parte fraccionaria a un puntero char
         itoa(*fromAnyBase_integerPart, fromDecimal_integerPart, 10);
         gcvt(*fromAnyBase_fractionalPart, 10, fromDecimal_fractionalPart);
@@ -173,10 +177,10 @@ void help() {
 
     printf("\n Bienvenido al convertidor de bases programado en C.\n");
     printf("\n A continuacion se indican las opciones de invocacion del programa:\n\n");
-    printf("\t-n numero real :: Indica el numero al que se le hara el cambio de base. Maxima cantidad de digitos enteros: 10. Maxima cantidad de digitos fraccionarios: 5.\n");
+    printf("\t-n numero a convertir :: Indica el numero al que se le hara el cambio de base. Maxima cantidad de digitos enteros: 10. Maxima cantidad de digitos fraccionarios: 5.\n");
     printf("\t-s base origen :: Especifica la base a la que pertence el numero ingresado. Bases permitidas: [2,16]. \n");
     printf("\t-d base destino ::  Especifica la base a la que pertence el numero ingresado. Bases permitidas: [2,16]. \n");
-    printf("\t-v computos intermedios :: Permite visualizar en forma secuencial y ordenada los computos realizados para cambiar el numero ingresado de la base origen a la base destino. \n");
+    printf("\t-v computos intermedios :: Permite visualizar en forma secuencial y ordenada los computos realizados para representar el numero ingresado en base destino. \n");
     printf("\t-h ayuda :: Provee informacion para poder utilizar el programa de forma correcta. \n");
     exit(EXIT_SUCCESS);
 }
