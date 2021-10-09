@@ -4,66 +4,12 @@
 #include "integerPart.h"
 #include "utilities.h"
 
-int *multiplicationMethodInteger(char *number, int *base, short int *detailed) {
-
-    int *length, *power, *result, *index, *digit, *temporaryResult;
-
-    power = malloc(sizeof(int));
-    result = malloc(sizeof(int));
-    index = malloc(sizeof(int));
-    digit = malloc(sizeof(int));
-    temporaryResult = malloc(sizeof(int));
-
-    length = stringLength(number);
-
-    *index = *length - 1;
-    *power = 0;
-    *result = 0;
-    *digit = 0;
-    *temporaryResult = 0;
-
-    if (*detailed)
-        printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE ENTERA) ---------------------\n");
-
-    for (*index = *index; *index >= 0; *index = *index - 1) {
-
-        digit = transformNumberToDecimal(number + *index);
-        *temporaryResult = (*digit * pow(*base, *power));
-        *result = *result + *temporaryResult;
-
-        if (*detailed)
-            printf("\n R%i --> %i * %i^%i = %i\n", *power, *digit, *base, *power, *temporaryResult);
-
-        *power = *power + 1;
-    }
-
-    if (*detailed) {
-
-        *index = *index +1;
-        printf("\n Numero Convertido -->");
-
-        for (*index = *index; *index < *power; *index = *index + 1){
-
-            printf(" R%i ",*index);
-
-            if (*index < *power - 1)
-                printf("+");
-        }
-
-        printf(" = (%i)b10\n", *result);
-        printf("\n ---------------------- FIN DE LA CONVERSION (PARTE ENTERA) -----------------------");
-    }
-
-    free(length);
-    free(power);
-    free(index);
-    free(digit);
-    free(temporaryResult);;
-
-    return result;
-}
-
-//MODIFICAR PARA PUNTEROS
+/**
+ * Procedimiento encargado de invertir una cadena de caracteres.
+ * @param stringToReverse
+          Puntero a char que almacena la parte entera del numero ingresado por el usuario ya convertido a base destino(expresado en cadena de caracteres).
+ *
+ */
 void reverseString (char *stringToReverse) {
 
     int *i, *length;
@@ -86,9 +32,19 @@ void reverseString (char *stringToReverse) {
     free(i);
     free(length);
     free(temporalChar);
-
 }
 
+/**
+ * Funcion encargada de llevar a cabo el metodo de la division para la parte entera del numero ingresado por el usuario.
+ * @param number
+          Puntero a char que almacena la parte entera del numero ingresado por el usuario (expresado en cadena de caracteres).
+ * @param base
+          Puntero a entero que almacena la base numerica destino ingresada por el usuario.
+ * @param detailed
+          Puntero a entero corto que almacena un 1 si el usuario ingreso el parametro "-v", 0 si el usuario no ingreso el parametro "-v".
+ * @return Puntero a char que almacena el numero entero ya convertido a base destino.
+ *
+ */
 char *divisionMethodInteger(char *number, int *base, short int *detailed) {
 
     int *transformedNumber, *reminder, *index;
@@ -109,13 +65,15 @@ char *divisionMethodInteger(char *number, int *base, short int *detailed) {
 
     while (*transformedNumber != 0) {
 
+        // IMPRESION DE DATOS ("-v")
         if (*detailed)
             printf("%i.   %i / %i",(*index) + 1, *transformedNumber, *base);
 
-        *reminder = *transformedNumber % *base;
-        *transformedNumber /= *base;
-        setEquivalentDigit((result + *index), reminder);
+        *reminder = *transformedNumber % *base;             // Se almacena el resto de la division
+        *transformedNumber /= *base;                        // Se divide el numero por la base
+        setEquivalentDigit((result + *index), reminder);    // Se obtiene el digito transformado en la base correspondiente
 
+        // IMPRESION DE DATOS ("-v")
         if (*detailed)
             printf(" \t--- Resto%i = %i <=> (%c)b%i --- Cociente: %i\n",(*index)+1, *reminder, *(result + *index), *base,*(transformedNumber));
 
@@ -125,6 +83,7 @@ char *divisionMethodInteger(char *number, int *base, short int *detailed) {
     *(result + *index) = '\0';
     reverseString(result);
 
+    // IMPRESION DE DATOS ("-v")
     if (*detailed) {
 
         printf("\nNumero Convertido --> ");
@@ -141,6 +100,79 @@ char *divisionMethodInteger(char *number, int *base, short int *detailed) {
     free(transformedNumber);
     free(reminder);
     free(index);
+
+    return result;
+}
+
+/**
+ * Funcion encargada de llevar a cabo el metodo de la multiplicacion para la parte entera del numero ingresado por el usuario.
+ * @param number
+          Puntero a char que almacena la parte entera del numero ingresado por el usuario (expresado en cadena de caracteres).
+ * @param base
+          Puntero a entero que almacena la base numerica origen ingresada por el usuario.
+ * @param detailed
+          Puntero a entero corto que almacena un 1 si el usuario ingreso el parametro "-v", 0 si el usuario no ingreso el parametro "-v".
+ * @return Puntero a char que almacena el numero fraccional ya convertido a base 10.
+ *
+ */
+int *multiplicationMethodInteger(char *number, int *base, short int *detailed) {
+
+    int *length, *power, *result, *index, *digit, *temporaryResult;
+
+    power = malloc(sizeof(int));
+    result = malloc(sizeof(int));
+    index = malloc(sizeof(int));
+    digit = malloc(sizeof(int));
+    temporaryResult = malloc(sizeof(int));
+
+    length = stringLength(number);
+
+    *index = *length - 1;
+    *power = 0;
+    *result = 0;
+    *digit = 0;
+    *temporaryResult = 0;
+
+    // IMPRESION DE DATOS ("-v")
+    if (*detailed)
+        printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE ENTERA) ---------------------\n");
+
+    for (*index = *index; *index >= 0; *index = *index - 1) {
+
+        digit = transformNumberToDecimal(number + *index);      // Transformo el digito actual del numero ingresado a decimal
+        *temporaryResult = (*digit * pow(*base, *power));       // Multiplico el digito actual por la base elevado a la potencia (de acuerdo a la posicion)
+        *result = *result + *temporaryResult;                   // Adiciono el resultado obtenido en temporaryResult en una variable.
+
+        // IMPRESION DE DATOS ("-v")
+        if (*detailed)
+            printf("\n R%i --> %i * %i^%i = %i\n", *power, *digit, *base, *power, *temporaryResult);
+
+        *power = *power + 1;                                    // Aumento la potencia
+    }
+
+    // IMPRESION DE DATOS ("-v")
+    if (*detailed) {
+
+        *index = *index +1;
+        printf("\n Numero Convertido -->");
+
+        for (*index = *index; *index < *power; *index = *index + 1){
+
+            printf(" R%i ",*index);
+
+            if (*index < *power - 1)
+                printf("+");
+        }
+
+        printf(" = (%i)b10\n", *result);
+        printf("\n ---------------------- FIN DE LA CONVERSION (PARTE ENTERA) -----------------------");
+    }
+
+    free(length);
+    free(power);
+    free(index);
+    free(digit);
+    free(temporaryResult);;
 
     return result;
 }

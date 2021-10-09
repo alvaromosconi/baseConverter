@@ -4,6 +4,17 @@
 #include "fractionalPart.h"
 #include "utilities.h"
 
+/**
+ * Funcion encargada de llevar a cabo el metodo de la division para la parte fraccional del numero ingresado por el usuario.
+ * @param number
+          Puntero a char que almacena la parte fraccionaria del numero ingresado por el usuario (expresado en cadena de caracteres).
+ * @param base
+          Puntero a entero que almacena la base numerica origen ingresada por el usuario.
+ * @param detailed
+          Puntero a entero corto que almacena un 1 si el usuario ingreso el parametro "-v", 0 si el usuario no ingreso el parametro "-v".
+ * @return Puntero a float que almacena el numero fraccional ya convertido a base 10.
+ *
+ */
 float *divisionMethodFractional(char *number, int *base, short int *detailed) {
 
     int *length, *negativePower, *digit, *index;
@@ -24,24 +35,25 @@ float *divisionMethodFractional(char *number, int *base, short int *detailed) {
     *index = 0;
     *temporaryResult = 0;
 
+    // IMPRESION DE DATOS ("-v")
     if (*detailed)
         printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE FRACCIONARIA) ---------------------\n");
 
     while (*index < *length) {
 
-        digit = transformNumberToDecimal(number + *index);
-        *temporaryResult = (*digit * pow(*base, *negativePower));
-        *result = *result + *temporaryResult;
+        digit = transformNumberToDecimal(number + *index);        // Transformo el digito actual del numero ingresado a decimal
+        *temporaryResult = (*digit * pow(*base, *negativePower)); // Multiplico el digito actual por la base elevado a la potencia negativa (de acuerdo a la posicion)
+        *result = *result + *temporaryResult;                     // Adiciono el resultado obtenido en temporaryResult en una variable.
 
         if (*detailed)
             printf("\n R%i --> %i * %i^%i = %f\n",*negativePower, *digit, *base, *negativePower, *temporaryResult);
 
-        *index = *index + 1;
-        *negativePower = *negativePower - 1;
+        *index = *index + 1;                                      // Aumento el indice (variable control)
+        *negativePower = *negativePower - 1;                      // Disminuyo la variable que marca la potencia negativa.
     }
 
+    // IMPRESION DE DATOS ("-v")
     if (*detailed) {
-
 
         printf("\n Numero Convertido --> ");
 
@@ -66,6 +78,18 @@ float *divisionMethodFractional(char *number, int *base, short int *detailed) {
     return result;
 }
 
+
+/**
+ * Funcion encargada de llevar a cabo el metodo de la multiplicacion para la parte fraccional del numero ingresado por el usuario.
+ * @param number
+          Puntero a char que almacena la parte fraccionaria del numero ingresado por el usuario (expresado en cadena de caracteres).
+ * @param base
+          Puntero a entero que almacena la base numerica destino ingresada por el usuario.
+ * @param detailed
+          Puntero a entero corto que almacena un 1 si el usuario ingreso el parametro "-v", 0 si el usuario no ingreso el parametro "-v".
+ * @return Puntero a char que almacena el numero fraccional ya convertido a base destino.
+ *
+ */
 char *multiplicationMethodFractional(char *number, int *base, short int *detailed) {
 
     int *index, *integerPart, *length;
@@ -80,30 +104,34 @@ char *multiplicationMethodFractional(char *number, int *base, short int *detaile
 
     length = stringLength(number);
 
-    *transformedNumber = (double) atoi(number) / pow (10, *length);
+    *transformedNumber = (double) atoi(number) / pow (10, *length); // Se transforma el numero a double y se lo corre 10^(cantidad de digitos) lugares.
     *index = 0;
     *integerPart = 0;
 
+    // IMPRESION DE DATOS ("-v")
     if (*detailed)
         printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE FRACCIONARIA) ---------------------\n");
 
     while (*index < 11) {
 
-        *multiplicationResult = (int) (*transformedNumber * *base);
+        *multiplicationResult = (int) (*transformedNumber * *base); // Se multiplica el numero actual por la base y se obtiene la parte entera
 
+        // IMPRESION DE DATOS ("-v")
         if (*detailed)
             printf("\nR%i --> %lf * %i = %i\t",(*index), *transformedNumber, *base, (int) *multiplicationResult);
 
-        *transformedNumber = (*transformedNumber * *base) - *multiplicationResult;
-        *integerPart = *multiplicationResult;
-        setEquivalentDigit((finalResult + *index), integerPart);
+        *transformedNumber = (*transformedNumber * *base) - *multiplicationResult;  // Se le resta la parte entera al numero actual
+        *integerPart = *multiplicationResult;                                       // Se almacena la parte entera
+        setEquivalentDigit((finalResult + *index), integerPart);                    // Se setea el digito equivalente en la base requerida
 
+        // IMPRESION DE DATOS ("-v")
         if (*detailed)
             printf("<==> (%c)b%i", *(finalResult + *index), *base);
 
         *index = *index + 1;
     }
 
+    // IMPRESION DE DATOS ("-v")
     if (*detailed) {
 
         printf("\n\nNumero Convertido --> ");

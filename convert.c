@@ -5,18 +5,26 @@
 #include "fractionalPart.h"
 #include "utilities.h"
 
+/**
+ * Procedimiento encargado de analizar los argumentos e invocar a otros/as procedimientos y funciones.
+ * @param argc
+          Indica el numero de argumentos ingresados por el usuario.
+ * @param argv
+          Puntero a arreglo de punteros (Contiene los argumentos ingresados por el usuario).
+ * @return 0 Si la ejecución fue exitosa, 1 si se produjo algun error.
+ */
 int main(int argc, char * argv[]) {
 
     exit(*parseArguments(argc, argv));
 }
 
 /**
- * Procedimiento encargado de analizar los argumentos e invocar a otros/as procedimientos y funciones.
+ * Funcion encargada de analizar los argumentos e invocar a otros/as procedimientos y funciones.
  * @param nArg
           Indica el numero de argumentos ingresados por el usuario.
  * @param argv
-          Contiene los argumentos ingresados por el usuario.
- * @return
+          Puntero a arreglo de punteros (Contiene los argumentos ingresados por el usuario).
+ * @return Puntero a entero corto que almacena un 0 si la ejecución fue exitosa, 1 si se produjo algun error.
  */
 short int *parseArguments(int nArg, char *argv[]) {
 
@@ -40,11 +48,12 @@ short int *parseArguments(int nArg, char *argv[]) {
     *detailed = 0;
     *num = 0;
 
+    // Bucle encargado de analizar los argumentos ingresados por consola para luego almacenarlos.
     for (*index = 1; *index < nArg; ++*index) {
 
+        // Precedencia del help.
         if (nArg < 3 || *stringCompare(argv[*index], "-h") == 1)
             help();
-       // printf("%s", argv[*index]);
         else if (*stringCompare(argv[*index], "-n") == 1)
              num = argv[++*index];
         else if (*stringCompare(argv[*index], "-s") == 1)
@@ -60,25 +69,26 @@ short int *parseArguments(int nArg, char *argv[]) {
     integerPart = getIntegerSide(num, integerPart);
     fractionalPart = getFractionalSide(num, fractionalPart);
 
-    if (nArg > 1) {
-        if (*baseD < 2 || *baseD > 16) {
-            printf("\n DATOS INGRESADOS INCORRECTOS :: La base de destino debe estar en el rango [2,16].\n");
-            *valueToReturn = EXIT_FAILURE;
-        }
-        else if (*stringLength(integerPart) > 10) {
-            printf("\n DATOS INGRESADOS INCORRECTOS :: El maximo de digitos para la parte entera es 10.\n");
-            *valueToReturn = EXIT_FAILURE;
-        }
-        else if (*stringLength(fractionalPart) > 5) {
-            printf("\n DATOS INGRESADOS INCORRECTOS :: El maximo de digitos para la parte fraccionaria es 5.\n");
-            *valueToReturn = EXIT_FAILURE;
-        }
-        else if (*validateNumber(num, baseS) == 1)
-            buildNumber(integerPart, fractionalPart, baseS, baseD, detailed);
-        else {
-            printf("\n DATOS INGRESADOS INCORRECTOS :: El numero y/o la base origen ingresados son incorrectos.\n");
-            *valueToReturn = EXIT_FAILURE;
-        }
+    // Verificacion de las bases
+    if (*baseD < 2 || *baseD > 16) {
+        printf("\n DATOS INGRESADOS INCORRECTOS :: La base de destino debe estar en el rango [2,16].\n");
+        *valueToReturn = EXIT_FAILURE;
+    } // Verificacion del largo de la parte entera
+    else if (*stringLength(integerPart) > 10) {
+        printf("\n DATOS INGRESADOS INCORRECTOS :: El maximo de digitos para la parte entera es 10.\n");
+        *valueToReturn = EXIT_FAILURE;
+    } // Verificacion del largo de la parte fraccionaria
+    else if (*stringLength(fractionalPart) > 5) {
+        printf("\n DATOS INGRESADOS INCORRECTOS :: El maximo de digitos para la parte fraccionaria es 5.\n");
+        *valueToReturn = EXIT_FAILURE;
+    } // Verificacion de que el numero ingresado pertenezca a la base
+    else if (*validateNumber(num, baseS) == 1) {
+        buildNumber(integerPart, fractionalPart, baseS, baseD, detailed);
+        *valueToReturn = EXIT_SUCCESS;
+    }
+    else {
+        printf("\n DATOS INGRESADOS INCORRECTOS :: El numero y/o la base origen ingresados son incorrectos.\n");
+        *valueToReturn = EXIT_FAILURE;
     }
 
     free(baseS);
@@ -92,6 +102,21 @@ short int *parseArguments(int nArg, char *argv[]) {
     return valueToReturn;
 }
 
+/**
+ * Procedimiento encargado de hacer los llamados a las funciones y/o procedimientos que conviertenes los numeros expresados en base origen a
+   el numero equivalente en base destino.
+ * @param integerPart
+          Puntero a char que almacena la parte entera del numero ingresado por el usuario.
+ * @param fractionalPart
+          Puntero a char que almacena la parte fraccionaria del numero ingresado por el usuario.
+ * @param sourceBase
+          Puntero a entero que almacena la base origen ingresada por el usuario.
+ * @param destinationBase
+          Puntero a entero que almacena la base destino ingresada por el usuario.
+ * @param detailed
+          Puntero a entero corto que almacena un 1 si el usuario ingreso el parametro "-v", 0 si el usuario no ingreso el parametro "-v".
+ *
+ */
 void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *destinationBase, short int *detailed) {
 
     char *fromDecimal_integerPart, *fromDecimal_fractionalPart;
@@ -151,31 +176,30 @@ void help() {
     printf("\t-d base destino ::  Especifica la base a la que pertence el numero ingresado. Bases permitidas: [2,16]. \n");
     printf("\t-v computos intermedios :: Permite visualizar en forma secuencial y ordenada los computos realizados para cambiar el numero ingresado de la base origen a la base destino. \n");
     printf("\t-h ayuda :: Provee informacion para poder utilizar el programa de forma correcta. \n");
-    exit(0);
+    exit(EXIT_SUCCESS);
 }
 
 /**
  * Funcion encargada de verificar si el numero recibido por parametro corresponde a la base recibida por parametro.
  * @param number
-          Numero ingresado por el usuario (cadena de caracteres).
+          Puntero a entero que almacena el numero ingresado por el usuario (cadena de caracteres).
  * @param base
-          Base numerica ingresada por el usuario.
- * @return 1 si el numero corresponde a la base, 0 en caso contrario.
+          Puntero a entero que almacena la base numerica origen ingresada por el usuario.
+ * @return Puntero a entero corto que almacena 1 si el numero corresponde a la base, 0 en caso contrario.
  *
  */
-int *validateNumber(const char *number, int *base) {
+short int *validateNumber(const char *number, const int *base) {
 
     int *flag;
     int * toReturn;
 
     toReturn = malloc(sizeof(int));
     flag = malloc(sizeof(int));
-    *flag = 1;
+    *flag = 1; // Variable para denotar si ya se encontro un punto.
+               // (Solo se admite un punto para separar la parte entera de la fraccional, en caso de encontrar mas de 1 se denotara el numero ingresado como invalido)
 
-    if (*base > 16)
-        *toReturn = 0;
-
-    else if (*base <= 10)
+    // Control para chequear numeros pertenecientes a bases <=10
+    if (*base <= 10)
 
         while ( (*number >= '0' && *number < ('0' + *base)) || (*number == '.' && *flag == 1)) {
 
@@ -186,10 +210,12 @@ int *validateNumber(const char *number, int *base) {
         }
 
     else
-
+    // Verifica la posicion ASCII (en decimal) del caracter en relacion a la base ingresada.
         while( (*number >= '0' && *number <= ('0' + *base)) ||
+               (*number >= 'a' && *number < ('a' + *base - 10)) ||
                (*number >= 'A' && *number < ('A' + *base - 10)) ||
                (*number == '.' && *flag == 1)) {
+
                 if (*number == '.')
                     *flag = 0;
 
@@ -199,25 +225,25 @@ int *validateNumber(const char *number, int *base) {
    if (*number == '\0')
       *toReturn = 1;
 
+   free(flag);
 
    return toReturn;
 }
 
-
 /**
  * Funcion encargada de extraer la parte fraccionaria del numero ingresado.
  * @param number
-          Numero ingresado por el usuario (cadena de caracteres).
+          Puntero a char que apunta al primer caracter del numero ingresado por el usuario (cadena de caracteres).
  * @param destination
           Puntero auxiliar para ubicar el inicio de la cadena a retornar.
- * @return Parte fraccionaria del numero ingresado.
+ * @return Puntero a char que apunta al primer caracter de la parte fraccionaria.
  */
 char *getFractionalSide(const char *number, char *destination) {
 
     char *fractionalSide = destination;
     int *flag;
     flag = malloc(sizeof(short int));
-    *flag = 1;
+    *flag = 1; // Puntero para verificar si el numero tiene parte fraccionaria.
 
     while (*number != '.' && *flag == 1) {
         number++;
@@ -227,6 +253,7 @@ char *getFractionalSide(const char *number, char *destination) {
 
     number++;
 
+    // Comienzo de la lectura de la parte fraccionaria.
     while (*number != '\0' && *flag == 1)
         *fractionalSide++ = *number++;
 
@@ -235,28 +262,31 @@ char *getFractionalSide(const char *number, char *destination) {
     if (*flag == 0)
         *destination = '\0';
 
+    free(flag);
+    free(fractionalSide);
+
     return destination;
 }
 
 /**
  * Funcion encargada de extraer la parte entera del numero ingresado.
  * @param number
-          Numero ingresado por el usuario (cadena de caracteres).
+          Puntero a char que apunta al primer caracter del numero ingresado por el usuario (cadena de caracteres).
  * @param destination
           Puntero auxiliar para ubicar el inicio de la cadena a retornar.
- * @return Parte entera del numero ingresado.
+ * @return Puntero a char que apunta al primer caracter de la parte entera.
  */
 char *getIntegerSide(const char *number, char *destination) {
 
     char *integerSide = destination;
 
+    // Lectura de la parte entera del numero
     while (*number != '.' && *number != '\0')
         *integerSide++ = *number++;
 
     *integerSide = '\0';
 
+    free(integerSide);
+
     return destination;
 }
-
-
-

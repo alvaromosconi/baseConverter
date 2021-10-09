@@ -12,7 +12,7 @@ void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *
 
 void help();
 
-int *validateNumber(const char *number, int *base);
+short int *validateNumber(const char *number, const int *base);
 
 char *getFractionalSide(const char *number, char *destination);
 
