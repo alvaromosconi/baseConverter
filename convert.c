@@ -15,7 +15,10 @@
  */
 int main(int argc, char * argv[]) {
 
-    exit(*parseArguments(argc, argv));
+    if (argc > 1)
+        exit(*parseArguments(argc, argv));
+    else
+        exit(EXIT_SUCCESS);
 }
 
 /**
@@ -50,7 +53,6 @@ int *parseArguments(int nArg, char *argv[]) {
 
     // Bucle encargado de analizar los argumentos ingresados por consola para luego almacenarlos.
     for (*index = 1; *index < nArg; ++*index) {
-
         // Precedencia del help.
         if (nArg < 3 || *stringCompare(argv[*index], "-h") == 1)
             help();
@@ -70,7 +72,7 @@ int *parseArguments(int nArg, char *argv[]) {
     fractionalPart = getFractionalSide(num, fractionalPart);
 
     // Verificacion de las bases
-    if (*baseD < 2 || *baseD > 16) {
+    if (*baseD < 2 || *baseS < 2 || *baseD > 16 || *baseS > 16) {
         printf("\n DATOS INGRESADOS INCORRECTOS :: La base de destino debe estar en el rango [2,16].\n");
         *valueToReturn = EXIT_FAILURE;
     } // Verificacion del largo de la parte entera
@@ -263,7 +265,6 @@ char *getFractionalSide(const char *number, char *destination) {
         *destination = '\0';
 
     free(flag);
-    free(fractionalSide);
 
     return destination;
 }
@@ -285,8 +286,6 @@ char *getIntegerSide(const char *number, char *destination) {
         *integerSide++ = *number++;
 
     *integerSide = '\0';
-
-    free(integerSide);
 
     return destination;
 }
