@@ -105,11 +105,11 @@ char *multiplicationMethodFractional(char *number, int *base, int *detailed) {
     integerPart = malloc(sizeof(int));
     multiplicationResult = malloc(sizeof(double));
     transformedNumber = malloc(sizeof(double));
-    finalResult = malloc(11 * sizeof(char));
+    finalResult = malloc(10 * sizeof(char));
 
     length = stringLength(number);
 
-    *transformedNumber = (double) atoi(number) / pow (10, *length); // Se transforma el numero a double y se lo corre 10^(cantidad de digitos) lugares.
+    *transformedNumber = atof(number) / pow (10, *length); // Se transforma el numero a double y se lo corre 10^(cantidad de digitos) lugares.
     *index = 0;
     *integerPart = 0;
     *finalResult = '0';
@@ -120,16 +120,16 @@ char *multiplicationMethodFractional(char *number, int *base, int *detailed) {
         if (*detailed)
             printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE FRACCIONARIA) ---------------------\n");
 
-        while (*index < 11) {
+        while (*index < 10 && *transformedNumber != (double) 0) {
 
-            *multiplicationResult = (int) (*transformedNumber * *base); // Se multiplica el numero actual por la base y se obtiene la parte entera
+            *multiplicationResult = (*transformedNumber * *base);                 // Se multiplica el numero actual por la base y se obtiene la parte entera
 
             // IMPRESION DE DATOS ("-v")
             if (*detailed)
                 printf("\nR%i --> %lf * %i = %i\t",(*index), *transformedNumber, *base, (int) *multiplicationResult);
 
-            *transformedNumber = (*transformedNumber * *base) - *multiplicationResult;  // Se le resta la parte entera al numero actual
-            *integerPart = *multiplicationResult;                                       // Se almacena la parte entera
+            *transformedNumber = *multiplicationResult - (int) *multiplicationResult;    // Se le resta la parte entera al numero actual
+            *integerPart = (int) *multiplicationResult;                                  // Se almacena la parte entera
             setEquivalentDigit((finalResult + *index), integerPart);                    // Se setea el digito equivalente en la base requerida
 
             // IMPRESION DE DATOS ("-v")
@@ -138,6 +138,8 @@ char *multiplicationMethodFractional(char *number, int *base, int *detailed) {
 
             *index = *index + 1;
         }
+
+        *(finalResult + *index) = '\0';
 
         // IMPRESION DE DATOS ("-v")
         if (*detailed) {
@@ -156,8 +158,6 @@ char *multiplicationMethodFractional(char *number, int *base, int *detailed) {
 
             free(temporalIndex);
         }
-
-        *(finalResult + *index - 1 ) = '\0';
     }
 
     else

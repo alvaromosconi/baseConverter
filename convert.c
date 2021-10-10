@@ -148,7 +148,7 @@ void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *
     else {
 
         fromDecimal_integerPart = malloc(20*sizeof(char));
-        fromDecimal_fractionalPart = malloc(10*sizeof(char));
+        fromDecimal_fractionalPart = malloc(11*sizeof(char));
         // Primero convertimos a decimal
         fromAnyBase_integerPart = multiplicationMethodInteger(integerPart, sourceBase, detailed);
         fromAnyBase_fractionalPart = divisionMethodFractional(fractionalPart, sourceBase, detailed);
