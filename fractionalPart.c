@@ -36,6 +36,8 @@ float *divisionMethodFractional(char *number, int *base, int *detailed) {
     *index = 0;
     *temporaryResult = 0;
 
+    *transformedNumber = atoi(number);
+
     // Si el numero no es 0, entonces llevar a cabo la conversion
     if (*transformedNumber != 0) {
 
