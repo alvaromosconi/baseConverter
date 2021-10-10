@@ -9,4 +9,6 @@ int *stringLength(char *string);
 
 void setEquivalentDigit(char *currentDigit, int *reminder);
 
+int *getRequiredSizeForNumber(char *number, int *destinationBase);
+
 #endif // COMMONMETHODS_H_INCLUDED

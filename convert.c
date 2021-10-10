@@ -28,7 +28,7 @@ int main(int argc, char * argv[]) {
           Indica el numero de argumentos ingresados por el usuario.
  * @param argv
           Puntero a arreglo de punteros (Contiene los argumentos ingresados por el usuario).
- * @return Puntero a entero que almacena un 0 si la ejecución fue exitosa, 1 si se produjo algun error.
+ * @return Puntero a entero que apunta al entero 0 si la ejecución fue exitosa, 1 si se produjo algun error.
  */
 int *parseArguments(int nArg, char *argv[]) {
 
@@ -110,15 +110,15 @@ int *parseArguments(int nArg, char *argv[]) {
  * Procedimiento encargado de hacer los llamados a las funciones y/o procedimientos que conviertenes los numeros expresados en base origen a
    el numero equivalente en base destino.
  * @param integerPart
-          Puntero a char que almacena la parte entera del numero ingresado por el usuario.
+          Puntero a char que apunta al primer caracter de la parte entera del numero ingresado por el usuario.
  * @param fractionalPart
-          Puntero a char que almacena la parte fraccionaria del numero ingresado por el usuario.
+          Puntero a char que apunta al primer caracter de la parte fraccionaria del numero ingresado por el usuario.
  * @param sourceBase
-          Puntero a entero que almacena la base origen ingresada por el usuario.
+          Puntero a entero que apunta al numero que representa la base numerica origen ingresada por el usuario.
  * @param destinationBase
-          Puntero a entero que almacena la base destino ingresada por el usuario.
+          Puntero a entero que apunta al numero que representa la base numerica destino ingresada por el usuario.
  * @param detailed
-          Puntero a entero corto que almacena un 1 si el usuario ingreso el parametro "-v", 0 si el usuario no ingreso el parametro "-v".
+          Puntero a entero que apunta al numero 1 si el usuario ingreso el parametro "-v", 0 si el usuario no ingreso el parametro "-v".
  *
  */
 void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *destinationBase, int *detailed) {
@@ -130,7 +130,7 @@ void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *
     if (*sourceBase == 10 && *destinationBase != 10) {
 
         // Se producen los llamados para convertir la parte entera y la parte fraccionaria
-        fromDecimal_integerPart = divisionMethodInteger(integerPart, destinationBase, detailed);                                                              // Caso contrario --> Se efectua la conversion correspondiente.
+        fromDecimal_integerPart = divisionMethodInteger(integerPart, destinationBase, detailed);    // Caso contrario --> Se efectua la conversion correspondiente.
         fromDecimal_fractionalPart = multiplicationMethodFractional(fractionalPart, destinationBase, detailed);
 
         printf("\n\n NUMERO OBTENIDO: (%s.%s)b%i \n", fromDecimal_integerPart, fromDecimal_fractionalPart, *destinationBase);
@@ -187,10 +187,10 @@ void help() {
 /**
  * Funcion encargada de verificar si el numero recibido por parametro corresponde a la base recibida por parametro.
  * @param number
-          Puntero a entero que almacena el numero ingresado por el usuario (cadena de caracteres).
+          Puntero a char que apunta al primer caracter del numero ingresado por el usuario (expresado en cadena de caracteres).
  * @param base
-          Puntero a entero que almacena la base numerica origen ingresada por el usuario.
- * @return Puntero a entero que almacena 1 si el numero corresponde a la base, 0 en caso contrario.
+          Puntero a entero que apunta al numero que representa la base numerica origen ingresada por el usuario.
+ * @return Puntero a entero que apunta al entero 1 si el numero corresponde a la base, 0 en caso contrario.
  *
  */
 int *validateNumber(const char *number, const int *base) {
@@ -238,7 +238,7 @@ int *validateNumber(const char *number, const int *base) {
 /**
  * Funcion encargada de extraer la parte fraccionaria del numero ingresado.
  * @param number
-          Puntero a char que apunta al primer caracter del numero ingresado por el usuario (cadena de caracteres).
+          Puntero a char que apunta al primer caracter del numero ingresado por el usuario (expresado en cadena de caracteres).
  * @param destination
           Puntero auxiliar para ubicar el inicio de la cadena a retornar.
  * @return Puntero a char que apunta al primer caracter de la parte fraccionaria.
@@ -275,7 +275,7 @@ char *getFractionalSide(const char *number, char *destination) {
 /**
  * Funcion encargada de extraer la parte entera del numero ingresado.
  * @param number
-          Puntero a char que apunta al primer caracter del numero ingresado por el usuario (cadena de caracteres).
+          Puntero a char que apunta al primer caracter del numero ingresado por el usuario (expresado en cadena de caracteres).
  * @param destination
           Puntero auxiliar para ubicar el inicio de la cadena a retornar.
  * @return Puntero a char que apunta al primer caracter de la parte entera.

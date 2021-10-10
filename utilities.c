@@ -1,10 +1,13 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
 #include "utilities.h"
 
 /**
  * Funcion encargada de transformar un caracter ASCII a su entero decimal equivalente.
  * @param characterToTransform
-          Puntero a char que almacena el caracter a transformar.
- * @return Un puntero a entero que almacena el entero decimal equivalente a el char recibido por parametro.
+          Puntero a char que apunta al caracter a transformar.
+ * @return Puntero a entero que apunta a un entero decimal equivalente al char recibido por parametro.
  *
  */
 int *transformNumberToDecimal (char *characterToTransform) {
@@ -31,7 +34,7 @@ int *transformNumberToDecimal (char *characterToTransform) {
           Puntero a char que apunta al primer caracter de la cadenaA.
    @param cadenaB
           Puntero a char que apunta al primer caracter de la cadenaB.
- * @return Puntero a entero que almacena un 1 si las cadenas eran iguales y un 0 en caso contrario.
+ * @return Puntero a entero que apunta a un 1 si las cadenas eran iguales y a un 0 en caso contrario.
  */
 int *stringCompare(const char *cadenaA, const char *cadenaB) {
 
@@ -57,7 +60,7 @@ int *stringCompare(const char *cadenaA, const char *cadenaB) {
  * Funcion encargada de contar la cantidad de caracteres de una cadena de caracteres.
  * @param string
           Puntero a char que apunta al primer caracter de la cadena ingresada por el usuario.
- * @return Puntero a entero que almacena la cantidad de caracteres de la cadena recibida.
+ * @return Puntero a entero que apunta a un entero que representa la cantidad de caracteres de la cadena recibida.
  */
 int *stringLength(char *string) {
 
@@ -76,9 +79,9 @@ int *stringLength(char *string) {
 /**
  * Procedimiento encargado de asignar el caracter equivalente al numero recibido por parametro.
  * @param currentDigit
-          Puntero a char que almcena a la posicion de memoria correspondiente al digito a transformar a base destino.
+          Puntero a char que almacena la posicion de memoria correspondiente al digito a transformar a base destino.
  * @param reminder
-          Puntero a entero que almacena el resto resultante de la division (expresado en base origen)
+          Puntero a entero que apunta al resto resultante de la division (expresado en base origen)
  */
 void setEquivalentDigit(char *currentDigit, int *reminder) {
 
@@ -91,5 +94,26 @@ void setEquivalentDigit(char *currentDigit, int *reminder) {
         *newDigit = 'A' + (*reminder - 10);
 
     *currentDigit = *newDigit;
+}
+
+/**
+ * Funcion encargarda de retornar la cantidad de digitos necesarias para representar el numero ingresado en base destino.
+ * @param number
+          Puntero a char que apunta al primer caracter del numero ingresado por el usuario (expresado en cadena de caracteres).
+ * @param destinationBase
+          Puntero a entero que apunta al entero que representa la base numerica destino ingresada por el usuario.
+ * @return Puntero a entero que apunta al entero que indica la cantidad de digitos necesarios para representar el numero ingresado en base destino.
+ */
+int *getRequiredSizeForNumber(char *number, int *destinationBase) {
+
+    int *transformedNumber, *valueToReturn;
+    transformedNumber = malloc(sizeof(int));
+    valueToReturn = malloc(sizeof(int));
+
+    *transformedNumber = atoi(number);
+
+    *valueToReturn = (int)(log(*transformedNumber)/log(*destinationBase) + 1);
+
+    return valueToReturn;
 }
 
