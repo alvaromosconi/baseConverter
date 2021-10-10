@@ -110,7 +110,7 @@ char *multiplicationMethodFractional(char *number, int *base, int *detailed) {
     finalResult = malloc(10 * sizeof(char));
 
     length = stringLength(number);
-
+    printf("%s", number);
     *transformedNumber = atof(number) / pow (10, *length); // Se transforma el numero a double y se lo corre 10^(cantidad de digitos) lugares.
     *index = 0;
     *integerPart = 0;

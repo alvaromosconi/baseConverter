@@ -152,12 +152,11 @@ void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *
         // Primero convertimos a decimal
         fromAnyBase_integerPart = multiplicationMethodInteger(integerPart, sourceBase, detailed);
         fromAnyBase_fractionalPart = divisionMethodFractional(fractionalPart, sourceBase, detailed);
-        // Transformamos la parte entera y la parte fraccionaria a un puntero char
+        // Transformamos la parte entera y la parte fraccionaria a string
         itoa(*fromAnyBase_integerPart, fromDecimal_integerPart, 10);
-        gcvt(*fromAnyBase_fractionalPart, 10, fromDecimal_fractionalPart);
+        sprintf(fromDecimal_fractionalPart, "%f", *fromAnyBase_fractionalPart);
         // Formateamos la parte fraccionaria (cortamos el digito entero y el .)
         getFractionalSide(fromDecimal_fractionalPart, fromDecimal_fractionalPart);
-
         // Printeamos utilizando los metodos de conversion de base decimal a base destino
         printf("\n\n NUMERO OBTENIDO: (%s.%s)b%i \n",  divisionMethodInteger(fromDecimal_integerPart, destinationBase, detailed),
                                                        multiplicationMethodFractional(fromDecimal_fractionalPart, destinationBase, detailed),
@@ -293,3 +292,5 @@ char *getIntegerSide(const char *number, char *destination) {
 
     return destination;
 }
+
+
