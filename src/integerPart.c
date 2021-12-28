@@ -53,7 +53,7 @@ char *divisionMethodInteger(char *number, int *base, int *detailed) {
     transformedNumber = malloc(sizeof(int));
     reminder = malloc(sizeof(int));
     index = malloc(sizeof(int));
-    result = malloc(*getRequiredSizeForNumber(number, base) * sizeof(char));         // Se obtendra la cantidad de digitos necesarios para representar el numero en la base destino
+    result = malloc((*getRequiredSizeForNumber(number, base) + 1) * sizeof(char));      // Se obtendra la cantidad de digitos necesarios para representar el numero en la base destino
 
     *transformedNumber = atoi(number);
     *reminder = 0;
@@ -62,7 +62,7 @@ char *divisionMethodInteger(char *number, int *base, int *detailed) {
 
     // IMPRESION DE DATOS ("-v")
     if (*detailed)
-        printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE ENTERA) ---------------------\n\n");
+        printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE ENTERA) METODO DE LA DIVISION---------------------\n\n");
 
     while (*transformedNumber != 0) {
 
@@ -81,8 +81,16 @@ char *divisionMethodInteger(char *number, int *base, int *detailed) {
         *index = *index + 1;
     }
 
-    *(result + *index) = '\0';
-    reverseString(result);
+    if (atoi(number) != 0) {
+        *(result + *index) = '\0';          // agrego el terminador
+        reverseString(result);              // invierto el resultado
+    }
+
+    // En caso de que el numero ingresado sea 0, se retorna el caracter 0 seguido del terminador ed cadena.
+    else {
+       *result = '0';
+       *(result + 1) = '\0';
+    }
 
     // IMPRESION DE DATOS ("-v")
     if (*detailed) {
@@ -96,6 +104,8 @@ char *divisionMethodInteger(char *number, int *base, int *detailed) {
         printf(" = (%s)b%i", result, *base);
         printf("\n\n ---------------------- FIN DE LA CONVERSION (PARTE ENTERA) -----------------------");
     }
+
+
 
     free(transformedNumber);
     free(reminder);
@@ -137,7 +147,7 @@ int *multiplicationMethodInteger(char *number, int *base, int *detailed) {
 
     // IMPRESION DE DATOS ("-v")
     if (*detailed)
-        printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE ENTERA) ---------------------\n");
+        printf("\n\n --------------------- INICIO DE LA CONVERSION (PARTE ENTERA) METODO DE LA MULTIPLICACION ---------------------\n");
 
     for (*index = *index; *index >= 0; *index = *index - 1) {
 

@@ -109,10 +109,11 @@ int *getRequiredSizeForNumber(char *number, int *destinationBase) {
     int *transformedNumber, *valueToReturn;
     transformedNumber = malloc(sizeof(int));
     valueToReturn = malloc(sizeof(int));
-
+    *valueToReturn = 2;                      // Minimo numero de caracteres posible
     *transformedNumber = atoi(number);
 
-    *valueToReturn = (int)(log(*transformedNumber)/log(*destinationBase) + 1);
+    if (*transformedNumber != 0)            // log(0) invalido
+        *valueToReturn = (int)(log(*transformedNumber)/log(*destinationBase) + 1);
 
     return valueToReturn;
 }

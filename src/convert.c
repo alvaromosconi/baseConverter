@@ -42,8 +42,8 @@ int *parseArguments(int nArg, char *argv[]) {
     num = malloc(sizeof(char));
     valueToReturn = malloc(sizeof(int));
 
-    integerPart = malloc(10 * sizeof(char));
-    fractionalPart = malloc(5 * sizeof(char));
+    integerPart = malloc(11 * sizeof(char));
+    fractionalPart = malloc(6 * sizeof(char));
 
     *baseS = 10;
     *baseD = 10;
@@ -125,7 +125,7 @@ void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *
 
     char *fromDecimal_integerPart, *fromDecimal_fractionalPart;
     int *fromAnyBase_integerPart;
-    float *fromAnyBase_fractionalPart;
+    double *fromAnyBase_fractionalPart;
     // Si la base de origen es 10 y la de destino es cualquiera:
     if (*sourceBase == 10 && *destinationBase != 10) {
 
@@ -134,37 +134,43 @@ void buildNumber(char *integerPart, char *fractionalPart, int *sourceBase, int *
         fromDecimal_fractionalPart = multiplicationMethodFractional(fractionalPart, destinationBase, detailed);
 
         printf("\n\n NUMERO OBTENIDO: (%s", fromDecimal_integerPart);
-        if (*fromDecimal_fractionalPart != '\0')
+        if (*fromDecimal_fractionalPart != '\0') {
             printf(".");
-        printf("%s)b%i \n", fromDecimal_fractionalPart, *destinationBase);
+            printf("%s)b%i \n", fromDecimal_fractionalPart, *destinationBase);
+        }
     }
     // Si la base de origen es cualquiera y la de destino es 10
     else if (*sourceBase != 10 && *destinationBase == 10) {
 
+        fromDecimal_fractionalPart = malloc(20 *sizeof(char));
         // Se producen los llamados para convertir la parte entera y la parte fraccionaria
         fromAnyBase_integerPart = multiplicationMethodInteger(integerPart, sourceBase, detailed);
         fromAnyBase_fractionalPart = divisionMethodFractional(fractionalPart, sourceBase, detailed);
-
-        printf("\n\n NUMERO OBTENIDO: (%f)b%i\n", *fromAnyBase_integerPart + *fromAnyBase_fractionalPart, *destinationBase);
+        // Transformamos la parte fraccionaria a string.
+        sprintf(fromDecimal_fractionalPart, "%.20lf", *fromAnyBase_fractionalPart);
+        // Formateamos la parte fraccionaria quitandole el 0 y el '.'
+        getFractionalSide(fromDecimal_fractionalPart, fromDecimal_fractionalPart);
+        printf("\n\n NUMERO OBTENIDO: (%i.%s)b%i\n", *fromAnyBase_integerPart, fromDecimal_fractionalPart, *destinationBase);
     }
     // De cualquier base origen a cualquier base destino [2,16]
     else {
 
         fromDecimal_integerPart = malloc(20*sizeof(char));
-        fromDecimal_fractionalPart = malloc(11*sizeof(char));
+        fromDecimal_fractionalPart = malloc(20*sizeof(char));
+
         // Primero convertimos a decimal
         fromAnyBase_integerPart = multiplicationMethodInteger(integerPart, sourceBase, detailed);
         fromAnyBase_fractionalPart = divisionMethodFractional(fractionalPart, sourceBase, detailed);
+
         // Transformamos la parte entera y la parte fraccionaria a string
         itoa(*fromAnyBase_integerPart, fromDecimal_integerPart, 10);
-        sprintf(fromDecimal_fractionalPart, "%f", *fromAnyBase_fractionalPart);
+        sprintf(fromDecimal_fractionalPart, "%.20lf", *fromAnyBase_fractionalPart);
         // Formateamos la parte fraccionaria (cortamos el digito entero y el .)
         getFractionalSide(fromDecimal_fractionalPart, fromDecimal_fractionalPart);
         // Printeamos utilizando los metodos de conversion de base decimal a base destino
-        printf("\n\n NUMERO OBTENIDO: (%s",  divisionMethodInteger(fromDecimal_integerPart, destinationBase, detailed));
-        if (*fromDecimal_fractionalPart != '0')
-            printf(".");
-        printf("%s)b%i \n", multiplicationMethodFractional(fromDecimal_fractionalPart, destinationBase, detailed),*destinationBase);
+        printf("\n\n NUMERO OBTENIDO: (%s.%s)b%i \n",  divisionMethodInteger(fromDecimal_integerPart, destinationBase, detailed),
+                                                       multiplicationMethodFractional(fromDecimal_fractionalPart, destinationBase, detailed),
+                                                      *destinationBase);
     }
 
     free(fromDecimal_integerPart);
