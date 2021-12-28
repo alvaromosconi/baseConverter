@@ -18,7 +18,7 @@ Captura del programa:
 
 entrada: convert -n 1010.4 -s 16 -d 10 -v
 
-![screenshoot](https://myoctocat.com/assets/images/base-octocat.svg)
+![screenshoot](https://github.com/alvaromosconi/baseConverter/blob/master/readmeImages/Sin%20t%C3%ADtulo.png)
 
 Para ver como se utiliza y mas información acerca del proyecto leer la documentacion del mismo.
 
